@@ -1,7 +1,7 @@
 <template>
   <div class="layout">
-    <!-- 头部 -->
-    <header class="header">
+    <!-- 只在聊天页面显示头部 -->
+    <header v-if="showHeader" class="header">
       <div class="header-left">
         <div class="logo">
           <h1>Chat IM</h1>
@@ -26,17 +26,26 @@
     </header>
 
     <!-- 主内容区域 -->
-    <main class="main">
+    <main class="main" :class="{ 'with-header': showHeader }">
       <router-view />
     </main>
   </div>
 </template>
 
 <script setup>
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { ElMessageBox } from 'element-plus'
 
+const route = useRoute()
+const router = useRouter()
 const userStore = useUserStore()
+
+// 只在聊天页面显示头部
+const showHeader = computed(() => {
+  return route.name === 'Chat'
+})
 
 const handleProfile = () => {
   // 跳转到个人资料页面
@@ -56,7 +65,7 @@ const handleLogout = async () => {
       type: 'warning'
     })
     userStore.logout()
-    // 可以在这里跳转到登录页面
+    router.push('/')
   } catch {
     // 用户取消
   }
@@ -64,7 +73,7 @@ const handleLogout = async () => {
 
 const handleLogin = () => {
   // 跳转到登录页面
-  console.log('登录')
+  router.push('/')
 }
 </script>
 
@@ -122,5 +131,9 @@ const handleLogin = () => {
   flex: 1;
   overflow: auto;
   background-color: $background-color-base;
+
+  &.with-header {
+    height: calc(100vh - #{$header-height});
+  }
 }
 </style> 

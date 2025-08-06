@@ -3,10 +3,19 @@ import { createRouter, createWebHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: () => import('@/views/Home.vue'),
+    name: 'Login',
+    component: () => import('@/views/Login.vue'),
     meta: {
-      title: '首页'
+      title: '登录'
+    }
+  },
+  {
+    path: '/chat',
+    name: 'Chat',
+    component: () => import('@/views/Chat.vue'),
+    meta: {
+      title: '聊天',
+      requiresAuth: true
     }
   },
   {
@@ -38,6 +47,16 @@ router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = `${to.meta.title} - Chat IM`
   }
+  
+  // 检查是否需要登录
+  if (to.meta.requiresAuth) {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      next('/')
+      return
+    }
+  }
+  
   next()
 })
 

@@ -1,16 +1,39 @@
 <template>
   <div id="app">
-    <TUIKit :SDKAppID="0" userID="xxx" userSig="xxx" />
-    <TUICallKit class="callkit-container" :allowedMinimized="true" :allowedFullScreen="false" />
+    <router-view
+      :key="locale"
+      :language="locale"
+      @changeLanguage="changeLanguage"
+    />
+    <!-- <ConferenceMainView displayMode="wake-up" /> -->
   </div>
 </template>
-<script lang="ts" setup>
-import { TUIKit } from './TUIKit';
-import { TUICallKit } from '@tencentcloud/call-uikit-vue';
-
-const SDKAppID = 20026251;
-const userID = '20026251';
-const userSig = 'eJyrVgrxCdYrSy1SslIy0jNQ0gHzM1NS80oy0zIhwgYGRmZGpoZQueKU7MSCgswUJSuYBEQ8taIgsyhVycrQ1NQUKGMAES3JzAWJmZuamJgbGxibQs3ITAca7G-m5BQUVpqR7BxpYuAfUhrmVFVpnhPhVBmjn1qR4ZVj5ORn7hZZGhgYlRdqq1QLAOIGMMA_';
+<script setup lang="ts">
+import { ref } from './TUIKit/adapter-vue';
+import { RouterView, useRouter } from 'vue-router';
+import { TUIStore, StoreName } from '@tencentcloud/chat-uikit-engine';
+// import ConferenceMainView from '@tencentcloud/roomkit-web-vue3';
+const router = useRouter();
+const locale = ref<string>('zh');
+TUIStore.watch(StoreName.USER, {
+  kickedOut: (value: string) => {
+    if (value && router.currentRoute.value.name !== 'login') {
+      localStorage.removeItem('TUIKit-userInfo');
+      router.replace({ name: 'login' });
+    }
+  },
+});
+function changeLanguage(language: string) {
+  locale.value = language;
+}
 </script>
+
 <style lang="scss">
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
 </style>

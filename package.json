@@ -1,24 +1,23 @@
 {
-  "name": "chat-im-app",
-  "version": "1.0.0",
+  "name": "chat-example",
+  "private": true,
+  "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vue-tsc -b && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.4.0",
-    "vue-router": "^4.2.0",
-    "pinia": "^2.1.0"
+    "vue": "^3.5.17"
   },
   "devDependencies": {
-    "vite": "^5.0.0",
-    "@vitejs/plugin-vue": "^5.0.0",
-    "sass": "^1.69.0"
-  },
-  "keywords": ["vue3", "vite", "sass"],
-  "author": "",
-  "license": "ISC",
-  "description": "Vue3 + Vite + Sass PC项目"
+    "@vitejs/plugin-vue": "^6.0.0",
+    "@vue/tsconfig": "^0.7.0",
+    "sass": "^1.77.0",
+    "sass-loader": "^10.1.1",
+    "typescript": "~5.8.3",
+    "vite": "^7.0.4",
+    "vue-tsc": "^2.2.12"
+  }
 }
